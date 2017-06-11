@@ -23,4 +23,9 @@ Example:
 ./cmake -source /Projects/shell
 ```
 
-
+##### For specifing flags
+``` 
+cmake -output <output_executable_name>(optional) -flags "specify_flags" -source <path_to_the_folder_containing_code_files>
+Example:
+./cmake -output shell.x -flags "-ansi -Wall -g" -source /Projects/shell
+```
