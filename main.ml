@@ -1,5 +1,3 @@
-(*Print usage*)
-
 let out = ref ""
 let re_dep = Str.regexp "#include \"[a-zA-Z][a-zA-Z0-9-]*\\.h\""
 let re_main = Str.regexp "main()"
@@ -37,9 +35,9 @@ let args = match Array.to_list Sys.argv with
 
 
 
-let is_header name = let len = String.length name in let ext = String.get name (len - 1) in ext == 'h'
-
+let is_header name = let len = String.length name in let ext = String.get name (len - 1) in ext = 'h'
 let rem_ext name = let len = String.length name in String.sub name 0 (len-1)
+let code_files name = let len = String.length name in let ext = String.sub name (len - 2) 2 in ext = ".c"
 
 let rec get_deps code =  let rec tok str pos = 
                             if pos >= String.length str then []
@@ -70,7 +68,8 @@ String.sub statement extra_len ((String.length statement) - extra_len - 1)
 let gen_dep deps  = List.fold_left (fun a e -> (extract_dep e)^ " " ^ a) "" deps 
 
 let gen_target deps file = if (is_header file && deps <> []) then file^": "^ (gen_dep deps) 
-                           else if (is_header file == false && deps <> []) then (rem_ext file)^"o: "^(gen_dep deps)^" "^file 
+                           else if (is_header file = false && deps <> []) then (rem_ext file)^"o: "^(gen_dep deps)^" "^file 
+                           else if (code_files file && deps = []) then (rem_ext file^"o: "^file)
                            else ""
 
 
@@ -94,6 +93,7 @@ let oc = open_out_gen [Open_creat; Open_text; Open_append] 0o640 (base^"/Makefil
 else ()
 
 
+
 let reject e = let c = (String.get e 0) in c <> '.'
 
 let write_make file_name base = let code = read_from_file (base^"/"^file_name) in let deps = get_deps code in 
@@ -112,9 +112,14 @@ Printf.fprintf oc "%s\n" ("CC = gcc\nall: "^(!out)^"\n");
 close_out oc
 
 
+let write_clean base = let oc = open_out_gen [Open_creat; Open_text; Open_append] 0o640 (base^"/Makefile") in
+Printf.fprintf oc "%s\n" ("\nclean: \n\trm -f *.o *.x "^(!out));
+close_out oc
+
 let main () = let (output,file) = args in 
-let _ = out := output in 
-let _ = write_base file 
-in  process (List.filter reject (Array.to_list (Sys.readdir file))) file
+out := output;
+write_base file;
+process (List.filter reject (Array.to_list (Sys.readdir file))) file;
+write_clean file
 
 let _ = main () ;;
