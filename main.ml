@@ -1,18 +1,18 @@
 let out = ref ""
 let all = ref []
-let re_dep = Str.regexp "#include \"[a-zA-Z][_a-zA-Z0-9-]*\\.h\""
-let re_main = Str.regexp "main("
 let rules = ref ""
 let flags = ref "-g"
 let list_of_files = ref []
+let re_dep = Str.regexp "#include \"[a-zA-Z][_a-zA-Z0-9-]*\\.h\""
+let re_main = Str.regexp "main("
 
 let print_usage () =
   print_string "\nThis file functions as a driver for interfacing with the C-make-utility\n";
   print_string "Usage:\n";
-  print_string "\t cmake -output <output_executable_name>(optional) -flags \"specify_flags\" -source <path_to_the_folder_containing_code_files>\n";
-  print_string "\t cmake -output <output_executable_name>(optional) -source <path_to_the_folder_containing_code_files>\n";
-  print_string "\t cmake -flags \"specify_flags\" -source <path_to_the_folder_containing_code_files>\n";
-  print_string "\t cmake -source <path_to_the_folder_containing_code_files>\n";
+  print_string "\t cmake -output <output_executable_name>(optional) -flags \"specify_flags\" \n\t -source <path_to_the_folder_containing_code_files>\n\n";
+  print_string "\t cmake -output <output_executable_name>(optional) -source <path_to_the_folder_containing_code_files>\n\n";
+  print_string "\t cmake -flags \"specify_flags\" -source <path_to_the_folder_containing_code_files>\n\n";
+  print_string "\t cmake -source <path_to_the_folder_containing_code_files>\n\n";
   exit 1
 
 let read_from_file input_filename  =
@@ -134,7 +134,7 @@ close_out oc
 
 
 let write_clean base = let oc = open_out_gen [Open_creat; Open_text; Open_append] 0o640 (base^"/Makefile") in
-Printf.fprintf oc "%s\n" ("\nclean: \n\trm -f *.o *.x "^(!out));
+Printf.fprintf oc "%s\n" ("\nclean: \n\t@echo \"Removing object and executable files\"\n\trm -f *.o *.x "^(!out));
 close_out oc
 
 let write_rules base = let oc = open_out_gen [Open_creat; Open_text; Open_append] 0o640 (base^"/Makefile") in
