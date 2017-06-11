@@ -1,2 +1,11 @@
 # C-Make-Utility
-A small scale makefile generator for C language
+
+Introduction
+------------
+
+A small scale makefile generator for C language.
+
+#### Compiling 
+
+
+
