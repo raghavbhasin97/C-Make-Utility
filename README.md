@@ -29,3 +29,6 @@ cmake -output <output_executable_name>(optional) -flags "specify_flags" -source 
 Example:
 ./cmake -output shell.x -flags "-ansi -Wall -g" -source /Projects/shell
 ```
+
+#### Flags
+The default flag is "-g" if you don't specify any.
