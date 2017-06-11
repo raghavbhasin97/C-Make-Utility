@@ -1,9 +1,10 @@
 let out = ref ""
 let all = ref []
-let re_dep = Str.regexp "#include \"[a-zA-Z][a-zA-Z0-9-]*\\.h\""
+let re_dep = Str.regexp "#include \"[a-zA-Z][_a-zA-Z0-9-]*\\.h\""
 let re_main = Str.regexp "main("
 let rules = ref ""
 let flags = ref "-g"
+let list_of_files = ref []
 
 let print_usage () =
   print_string "\nThis file functions as a driver for interfacing with the C-make-utility\n";
@@ -84,7 +85,10 @@ let gen_target deps file = if (is_header file && deps <> []) then file^": "^ (ge
                            else ""
 
 
-let gen_dep_main deps = List.fold_left (fun a e -> (rem_ext (extract_dep e))^ "o " ^ a) "" deps 
+let gen_dep_main deps = List.fold_left (fun a e -> let base_name = (rem_ext (extract_dep e)) in 
+  (if (List.mem (base_name^"c") (!list_of_files)) then base_name^"o " ^ a
+   else a
+  )) "" deps 
 
 let gen_target_main deps file_name = let file_base =  (rem_ext file_name) in 
 let deps = (gen_dep_main deps)^file_base^"o" in 
@@ -141,8 +145,10 @@ close_out oc
 
 let main () = let (output,file,fla) = args in 
 out := output;
-flags := (!flags) ^ " "^ fla;
-gen_rules (List.filter reject (Array.to_list (Sys.readdir file))) file;
+(if fla <> "" then flags := fla);
+let ls_res = Array.to_list (Sys.readdir file) in
+list_of_files := ls_res;
+gen_rules (List.filter reject ls_res) file;
 write_base file;
 write_rules file;
 write_clean file
