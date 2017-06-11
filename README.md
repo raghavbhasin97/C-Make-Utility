@@ -16,5 +16,11 @@ ocamlc -o cmake str.cma main.ml
 Example:
 ./cmake -source shell.x -source /Projects/shell
 ```
+##### For multiple exectable targets
+``` 
+./cmake -source <path_to_folder_containing_code_files>
+Example:
+./cmake -source /Projects/shell
+```
 
 
