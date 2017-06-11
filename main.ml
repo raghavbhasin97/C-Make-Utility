@@ -3,11 +3,15 @@ let all = ref []
 let re_dep = Str.regexp "#include \"[a-zA-Z][a-zA-Z0-9-]*\\.h\""
 let re_main = Str.regexp "main("
 let rules = ref ""
+let flags = ref "-g"
 
 let print_usage () =
   print_string "\nThis file functions as a driver for interfacing with the C-make-utility\n";
   print_string "Usage:\n";
+  print_string "\t cmake -output <output_executable_name>(optional) -flags \"specify_flags\" -source <path_to_the_folder_containing_code_files>\n";
   print_string "\t cmake -output <output_executable_name>(optional) -source <path_to_the_folder_containing_code_files>\n";
+  print_string "\t cmake -flags \"specify_flags\" -source <path_to_the_folder_containing_code_files>\n";
+  print_string "\t cmake -source <path_to_the_folder_containing_code_files>\n";
   exit 1
 
 let read_from_file input_filename  =
@@ -25,15 +29,14 @@ let read_from_file input_filename  =
 
 
 let args = match Array.to_list Sys.argv with
-  | _::"-output"::t ->( match t with
-                        |l::t2 ->( match t2 with 
-                                    |"-source"::n::[] -> (l,n)
-                                    | _ -> print_usage ()
-                         )  
-                        | _ -> print_usage ()         
-                      )
+  | _::"-output"::t -> (match t with
+                       |o::"-flags"::f::"-source"::s::[] -> (o,s,f)
+                       |o::"-source"::s::[] -> (o,s,"")
+                       |_ -> print_usage ()
+                    )
+  |_::"-flags"::f::"-source"::s::[] -> ("",s,f)
   |_ ::"-source"::t -> ( match t with
-                          |n::[] -> ("",n)
+                          |s::[] -> ("",s,"")
                           | _ -> print_usage ()
                          
                       )
@@ -90,7 +93,7 @@ if (!out <> "") then
 else
 (
  update_all file_name;
- file_base^"x: $(CC) -o "^file_base^"x "^deps
+ file_base^"x: "^deps^"\n\t$(CC) -o "^file_base^"x "^deps
 )
 
 
@@ -122,7 +125,7 @@ let  rec gen_rules lst basename = match lst with
 let get_all lst = List.fold_left (fun a e -> (rem_ext e)^ "x " ^ a) "" lst
 
 let write_base base= let oc = open_out  (base^"/Makefile") in
-Printf.fprintf oc "%s\n" ("CC = gcc\nall: "^(!out)^(get_all !all)^"\n");
+Printf.fprintf oc "%s\n" ("CC = gcc\nCFLAGS = "^(!flags)^"\nall: "^(!out)^(get_all !all)^"\n");
 close_out oc
 
 
@@ -136,8 +139,9 @@ close_out oc
 
 
 
-let main () = let (output,file) = args in 
+let main () = let (output,file,fla) = args in 
 out := output;
+flags := (!flags) ^ " "^ fla;
 gen_rules (List.filter reject (Array.to_list (Sys.readdir file))) file;
 write_base file;
 write_rules file;
