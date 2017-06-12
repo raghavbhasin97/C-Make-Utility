@@ -34,11 +34,12 @@ This utility is simple to use and provides you different options such as:
 ```
 
 #### Compiling 
+Compiling the code requires the following 
 ```
 ocamlc -o cmake str.cma main.ml
 ```
 
-#### Usage
+### Sample usage
 ```
 ./cmake -source <Enter_the_ouput_file_name> -source <path_to_folder_containing_code_files>
 Example:
@@ -58,5 +59,4 @@ Example:
 ./cmake -output shell.x -flags "-ansi -Wall -g" -source /Projects/shell
 ```
 
-#### Flags
-The default flag is "-g" if you don't specify any.
+
