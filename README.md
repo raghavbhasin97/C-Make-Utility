@@ -2,7 +2,7 @@
 
 Introduction
 ------------
-A simple makefile generator for C code written purely in Ocaml. The generated result is written to the directory as Makefile, and is fully functional. This utility works in the following way:
+A simple makefile generator for C code written purely in Ocaml. The generated result is written to the directory as Makefile, and is fully functional and based off of implicit rules. This utility works in the following way:
 ```
 1). Scans the user entered directory to select the code files
 2). Reads these files to descide the dependency of each file.
@@ -11,6 +11,10 @@ A simple makefile generator for C code written purely in Ocaml. The generated re
 5). Write the rules for makefile.
 6). Writes the clean target.
 ```
+
+Motivation
+----------
+I have usually seen that makefiles ease the process of comlation but are time consuming to write. Additionally, minor errors in makefiles may be time consuming to catch or result in the project not being built properly. Thus, automating this process makes sense.
 
 
 #### Compiling 
