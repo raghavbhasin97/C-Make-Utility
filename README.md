@@ -6,7 +6,7 @@ A simple makefile generator for C code written purely in Ocaml. The generated re
 ```
 1). Scans the user entered directory to select the code files
 2). Reads these files to descide the dependency of each file.
-3). Checks weather the code file has a main function. (All C files with a main block are added as targets to build the executables.)
+3). Checks weather the code file has a main function. (All C files with a main block are added to all.)
 4). Writes the variables (CC & CFLAGS) and sets the entry point all for make to begin.
 5). Write the rules for makefile.
 6). Writes the clean target.
