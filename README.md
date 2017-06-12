@@ -17,6 +17,22 @@ Motivation
 I have usually seen that makefiles ease the process of compilation, but are time consuming to write. Additionally, minor errors in the makefile may be time consuming to catch or result in the project not being properly built. Thus, automating this process makes sense.
 
 
+Usage
+-----
+This utility is simple to use and provides you different options such as:
+```
+1). -output: Lets you specify the executable name (if one executable is to be built)
+             With multiple executables don't specify this flag. This is flag purely
+             optional and if omitted results in an executabe as <Source file name>.x
+             
+2). -flags:  This option lets you specify the flags for compiling the code files. This
+             is purely optional and if omitted results in a makefile with "-g" flag as
+             the default option. All the flags must be specified enclosed in double quotes.
+
+3). -source: This option lets you specify the directory where code files are contained. This
+             option must be specified.
+```
+
 #### Compiling 
 ```
 ocamlc -o cmake str.cma main.ml
