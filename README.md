@@ -14,7 +14,7 @@ A simple makefile generator for C code written purely in Ocaml. The generated re
 
 Motivation
 ----------
-I have usually seen that makefiles ease the process of comlation but are time consuming to write. Additionally, minor errors in makefiles may be time consuming to catch or result in the project not being built properly. Thus, automating this process makes sense.
+I have usually seen that makefiles ease the process of compilation, but are time consuming to write. Additionally, minor errors in the makefile may be time consuming to catch or result in the project not being properly built. Thus, automating this process makes sense.
 
 
 #### Compiling 
