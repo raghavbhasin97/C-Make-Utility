@@ -19,7 +19,7 @@ I have usually seen that makefiles ease the process of compilation, but are time
 
 Usage
 -----
-This utility is simple to use and provides you different options such as:
+This utility is simple to use and provides you three different options such as:
 ```
 1). -output: Lets you specify the executable name (if one executable is to be built)
              With multiple executables don't specify this flag. This is flag purely
