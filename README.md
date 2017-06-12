@@ -34,7 +34,6 @@ This utility is simple to use and provides you different options such as:
 ```
 
 #### Compiling 
-Compiling the code requires the following 
 ```
 ocamlc -o cmake str.cma main.ml
 ```
